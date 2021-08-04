@@ -1,0 +1,7 @@
+{
+  "name": "Argus_V2",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
