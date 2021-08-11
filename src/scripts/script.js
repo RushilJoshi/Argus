@@ -216,7 +216,7 @@ function cvcode(isIOS) {
 
     let canvasFrame = document.getElementById("canvasOutput"); // canvasFrame is the id of <canvas>
     let context = canvasFrame.getContext("2d");
-    const FPS = 20;
+    const FPS = 15;
 
     // Process video
 

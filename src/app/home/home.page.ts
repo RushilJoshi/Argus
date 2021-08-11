@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import {Platform} from '@ionic/angular';
+import {Router} from '@angular/router';
+
+
+declare var cordova;
+declare function onOpenCvReady(isIOS);
 
 @Component({
   selector: 'app-home',
@@ -7,6 +13,12 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(public platform: Platform, private router: Router) { }
+
+
+
+  onScanClicked3(){
+    this.router.navigate(["scanner"]);
+  }
 
 }

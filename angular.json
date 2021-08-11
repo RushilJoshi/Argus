@@ -31,8 +31,18 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": [],
+            "styles": ["src/theme/style1.css", "src/global.scss"],
+            "scripts": [
+              "src/scripts/opencv.js",
+              "src/scripts/jquery-3.6.0.min.js",
+              "src/scripts/tesseract.min.js",
+              "src/scripts/azure-storage-blob.min.js",
+              "src/scripts/script.js",
+              "src/scripts/script2.js"
+              
+
+              
+            ],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,

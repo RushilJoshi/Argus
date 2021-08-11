@@ -13,7 +13,7 @@ declare var url_global;
 declare var lockImage;
 declare var scanRunning;
 declare var sized;
-declare function onOpenCvReady(isIOS);
+declare function onOpenCvReady(isIOS, link);
 declare function stopVideo();
 declare function discardProjection();
 
@@ -60,7 +60,7 @@ export class ScannerPage implements OnInit {
     console.log("Method!");
     // let video = <HTMLVideoElement>document.getElementById("videoInput");
     
-    onOpenCvReady(isIOS);
+    onOpenCvReady(isIOS, "");
     
   }
 
