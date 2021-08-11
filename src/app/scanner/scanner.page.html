@@ -1,0 +1,28 @@
+
+<ion-content>
+  <video src="" id="videoInput"></video>
+  <div id="sidebar">
+    <div id="buttonContainer">
+      <div id="photo-button" onclick="captureDocument()">
+        <div id="circle"></div>
+        <div id="ring"></div>
+      </div>
+      <div id="modebutton" onclick="toggleDisplayMode()"></div>
+    </div>
+  </div>
+
+  <div id="backbutton" (click)="switchToHome()"></div>
+  <div id="backdrop"></div>
+  <canvas id="canvasOutput" ></canvas>
+  <canvas id="canvasOutput2" [style.width.px]="canvasWidth" 
+  [style.height.px]="canvasHeight"></canvas>
+  <div id="projectionButtons">
+    <div id="accept" (click)="switchToSelect()"></div>
+    <div id="reject" onclick="discardProjection()"></div>
+  </div>
+  <canvas id="canvasOutputProjected"></canvas>
+  <script src="../../scripts/script.js"></script>
+  
+  
+  
+</ion-content>

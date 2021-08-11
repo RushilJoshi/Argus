@@ -1,0 +1,34 @@
+
+
+<ion-content [fullscreen]="true">
+
+  <div id="backbutton2" (click)="switchToScan()"></div>
+  <div id="centerContainer">
+    <img id="backgroundImage">
+    <canvas id="preview"></canvas>
+    <div class="vl"></div>
+    <div id="tableContainer">
+        <div id="tabletitle">Document Type:</div>
+        <input id="doctypeEntry" placeholder="Enter document type..." autocomplete="off">
+        <div class="horiz"></div>
+        <div id="tableScroll">
+          <table id="fieldTable">
+              <tr>
+                <th class="field">Field</th>
+                <th class="value">Value</th>
+                <th class="units">Units</th>
+                <th class="delete"></th>
+              </tr>
+          </table>
+          <div id="tabletext">Select a box to add...</div>
+        </div>
+        <div class="horiz"></div>
+        
+    </div>
+  </div>  
+  <script src="../../scripts/script2.js"></script>
+  
+
+
+</ion-content>
+

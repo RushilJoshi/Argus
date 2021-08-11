@@ -1,0 +1,154 @@
+#centerContainer {
+    width: 80%;
+    height: 80%;
+    text-align: center;
+
+    position: absolute;
+    top:100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+#tabletitle {
+    font-size: 24px;
+}
+
+#tabletext {
+    margin-top: 10px;
+}
+
+.horiz {
+    width: 100%;
+    height: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 4px solid gray;
+}
+
+#doctypeEntry {
+    margin-top: 20px;
+    width: 100%;
+    height: 50px;
+    font-size: 24px;
+    font-weight: 900;
+    color: #263c93;
+    background-color: #cccccc
+}
+
+#backbutton2 {
+    width: 80px;
+    height: 80px;
+    background-image: url("../assets/backbutton.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 50px;
+    left: 50px;
+    position: fixed;
+    z-index: 16;
+  }
+
+#preview {
+    position: absolute;
+    left: 0px;
+    z-index: 2;
+
+}
+
+#backgroundImage {
+    position: absolute;
+    left: 0px;
+    z-index: 1;
+    box-shadow: 5px 5px 10px #444444;
+}
+
+.vl {
+    border-left: 4px solid gray;
+    border-radius: 2px;
+    height: 400px;
+    position: absolute;
+    left: 50%;
+    margin-left: 50px;
+    top: 0;
+
+  }
+
+#tableContainer {
+    position: absolute;
+    right: 0px;
+    width: 400px;
+    
+}
+
+#tableScroll {
+    /* overflow:hidden; */
+    overflow-y: scroll;
+    height: 350px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout:fixed;
+    padding-top: 40px;
+
+}
+
+td, th {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+}
+
+th.field {
+    width: 30%;
+}
+
+th.value {
+    width: 30%;
+}
+
+th.units {
+    width: 30%;
+}
+
+th.delete {
+    width: 10%;
+}
+td.delete {
+    width: 10%;
+    background-image: url("../assets/trash.png");
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+  
+tr:nth-child(even) {
+background-color: #dddddd;
+}
+tr:nth-child(odd) {
+background-color: #bbbbbb;
+}
+
+th {
+    top: 0px;
+    position: sticky;
+    background-color: #555555;
+    color: white;
+    z-index: 2;
+}
+
+th:nth-child(4) {
+background-color: #ffffff;
+
+}
+
+td:nth-child(4) {
+    /* background-color: #ffffff; */
+    border-radius: 0px 10px 10px 0px;
+}
+
