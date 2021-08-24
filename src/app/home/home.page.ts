@@ -17,8 +17,8 @@ export class HomePage {
 
 
 
-  onScanClicked3(){
-    this.router.navigate(["scanner"]);
+  onScanClicked3(trainMode){
+    this.router.navigate(["scanner"], { state: { isTrainMode: trainMode} });
   }
 
 }

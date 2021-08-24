@@ -54,13 +54,16 @@ export class ScannerPage implements OnInit {
 
   startScanning() {
     var isIOS = this.platform.is("ios");
+    var isTrainMode = this.router.getCurrentNavigation().extras.state.isTrainMode;
+
+
     if (isIOS) {
       cordova.plugins.iosrtc.registerGlobals();
     }
     console.log("Method!");
     // let video = <HTMLVideoElement>document.getElementById("videoInput");
     
-    onOpenCvReady(isIOS, "");
+    onOpenCvReady(isIOS, isTrainMode);
     
   }
 

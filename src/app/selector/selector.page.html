@@ -3,6 +3,9 @@
 <ion-content [fullscreen]="true">
 
   <div id="backbutton2" (click)="switchToScan()"></div>
+  <div id="notification">
+    <div id="exitbutton"></div>
+  </div>
   <div id="centerContainer">
     <img id="backgroundImage">
     <canvas id="preview"></canvas>
@@ -23,7 +26,9 @@
           <div id="tabletext">Select a box to add...</div>
         </div>
         <div class="horiz"></div>
-        
+        <div class="submit" onclick = "submitToDataset()">Add to Dataset
+          <div id="submitIcon"></div>
+        </div>
     </div>
   </div>  
   <script src="../../scripts/script2.js"></script>

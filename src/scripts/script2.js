@@ -453,3 +453,8 @@ function onSelectorReady(data) {
         drawAll(sample_payload, dims);
     });
 }
+
+function submitToDataset() {
+    alert("Yeet!");
+    alert(sample_payload);
+}

@@ -7,7 +7,7 @@ declare function onSelectorReady(data);
 @Component({
   selector: 'app-selector',
   templateUrl: './selector.page.html',
-  styleUrls: [],
+  styleUrls: ['selector.page.scss'],
 })
 export class SelectorPage implements OnInit {
 

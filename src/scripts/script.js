@@ -20,7 +20,7 @@ var payload_global;
 var url_global;
 
 let FRAME_REQUIREMENT = 5;
-let verbose = true;
+let verbose = false;
 const { createWorker, createScheduler } = Tesseract;
 const scheduler = createScheduler();
 
@@ -717,9 +717,10 @@ function manualcode(link) {
    
 }
 
-function onOpenCvReady(isIOS, link) {
+function onOpenCvReady(isIOS, isTrainMode) {
 
     console.log("Running opencv loop!", cv);
+    alert("isTrainMode " + isTrainMode);
     
         
     scanRunning = true;
