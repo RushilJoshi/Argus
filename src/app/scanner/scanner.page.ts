@@ -26,6 +26,9 @@ declare var url_global;
 declare var lockImage;
 declare var scanRunning;
 declare var sized;
+declare var predictedLabel;
+
+
 declare function onOpenCvReady(isIOS, link, firebasedb);
 declare function stopVideo();
 declare function discardProjection();
@@ -44,19 +47,23 @@ export class ScannerPage implements OnInit {
 
   constructor(public platform: Platform, @Inject(DOCUMENT) document, private router: Router) { 
 
+
     this.router.events.subscribe(event =>{
       if (event instanceof NavigationEnd) {
         if (event.url == "/scanner") {
 
+          
+          
           alert("Scanner reached");
           window.dispatchEvent(new Event('resize'));
           scanRunning = true;
           lockImage = false;
           this.startScanning();
+          
         }
       }
-      
-   })
+    })
+
 
   }
 
@@ -87,8 +94,10 @@ export class ScannerPage implements OnInit {
     if (lockImage && payload_global != {}) {
         console.log("Moving contours and switching!");
         
+        
+        // alert(predictedLabel);
+        this.router.navigate(["selector"], { state: { data: payload_global, url:url_global, isTrainMode: this.tm, doctype: predictedLabel} });
         discardProjection();
-        this.router.navigate(["selector"], { state: { data: payload_global, url:url_global, isTrainMode: this.tm} });
     }
     else {
         console.log("You must capture a frame first");
@@ -97,6 +106,7 @@ export class ScannerPage implements OnInit {
   switchToHome() {
     
     sized = false;
+    scanRunning = false;
     this.router.navigate(["home"]);
   }
 

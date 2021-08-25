@@ -295,6 +295,25 @@ function captureGroups(text) {
     
 }
 
+function autoSelect(doctype) {
+    var selectList = [];
+    if (doctype == "pH Meter") {
+        selectList = [1, 2, 4, 7];
+    }
+    else if (doctype == "Osmolality") {
+        selectList = [1, 2, 3];
+    }
+    // alert(selectList);
+
+    for (var i = 0; i < selectList.length; i++) {
+        var ind = selectList[i];
+        sample_payload["blocks"][ind]["dotted"] = false;
+        addTableData(i, sample_payload["blocks"][ind]["tableID"]);
+    }
+    console.log("YEEET", sample_payload);
+
+}
+
 function drawBox(box, dims, dotted=false) {
     var x = box["box"]["x0"] * dims[2] / dims[0];
     var y = box["box"]["y0"] * dims[3] / dims[1];
@@ -404,7 +423,7 @@ function getCursorPosition(canvas, event, payload, dims) {
 }
 
 
-function onSelectorReady(data, isTrainMode) {
+function onSelectorReady(data, isTrainMode, doctype) {
     background = document.getElementById("backgroundImage");
     preview = document.getElementById("preview");
     ctx = preview.getContext("2d");
@@ -412,6 +431,7 @@ function onSelectorReady(data, isTrainMode) {
     if (!isTrainMode) {
         document.getElementById("submitButton").className = "submit2";
         document.getElementById("submitButton").innerHTML = "Generate JSON";
+        document.getElementById("doctypeEntry").value = doctype;
     }
     else {
         document.getElementById("submitButton").className = "submit";
@@ -431,40 +451,46 @@ function onSelectorReady(data, isTrainMode) {
 
     background.src = data["url"];
     background.addEventListener("load", function() {
-
-        
-        var old_width = background.width;
-        var old_height = background.height;
-
-        alert(background.width + " " + background.height);
+        setTimeout(function() {
         
 
-        var target = 480;
-        var ratio = target / old_width;
-        var new_height = old_height * ratio;
-
-        background.setAttribute("width", target);
-        background.setAttribute("height", new_height);
-        preview.setAttribute("width", target);
-        preview.setAttribute("height", new_height);
-
-        ctx.canvas.width = target;
-        ctx.canvas.height = new_height;
-        // canvas.width = target;
-        // canvas
-
-        alert(target + " " + new_height);
-        alert(preview.width + " " + preview.height);
-        
-        dims = [old_width, old_height, target, new_height];
-        console.log(old_width, old_height);
-        console.log(target, new_height);
-        drawAll(sample_payload, dims);
+            var old_width = background.width;
+            var old_height = background.height;
+    
+            // alert(background.width + " " + background.height);
+            
+    
+            var target = 480;
+            var ratio = target / old_width;
+            var new_height = old_height * ratio;
+    
+            background.setAttribute("width", target);
+            background.setAttribute("height", new_height);
+            preview.setAttribute("width", target);
+            preview.setAttribute("height", new_height);
+    
+            ctx.canvas.width = target;
+            ctx.canvas.height = new_height;
+            // canvas.width = target;
+            // canvas
+    
+            // alert(target + " " + new_height);
+            // alert(preview.width + " " + preview.height);
+            
+            dims = [old_width, old_height, target, new_height];
+            console.log(old_width, old_height);
+            console.log(target, new_height);
+    
+            autoSelect(doctype);
+            drawAll(sample_payload, dims);
+            
+        }, 200);
     });
+    
 }
 
 function submitToDataset() {
-    alert("Yeet!");
+    alert("Added to dataset.");
     alert(sample_payload);
     console.log("hmmm");
     console.log(db);

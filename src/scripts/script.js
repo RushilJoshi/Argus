@@ -20,7 +20,7 @@ var db = null;
 
 var payload_global;
 var url_global;
-var predictedLabel = "";
+var predictedLabel;
 
 let FRAME_REQUIREMENT = 5;
 let verbose = false;
@@ -35,6 +35,7 @@ function discardProjection() {
     ctx.clearRect(0, 0, canvasFrame.width,  canvasFrame.height);
     buttons.style.display = "none";
     lockImage = false;
+    predictedLabel = "";
 }
 
 function captureDocument() {
@@ -169,7 +170,7 @@ const uploadFiles = async () => {
                             payload_global = payload;
                             url_global = uploadURL;
 
-                            if (!isTrainModeGlobal) {
+                            if (!isTrainModeGlobal && predictedLabel == "") {
                                 predictedLabel = knn(payload);
                             }
                             
@@ -192,15 +193,16 @@ const uploadFiles = async () => {
 function stopVideo() {
     let video = document.getElementById("videoInput");
     let stream = video.srcObject;
-    if (stream) {
-        let tracks = stream.getTracks();
+    stream.getTracks().forEach(track => track.stop());
+    // if (stream) {
+    //     let tracks = stream.getTracks();
         
-        tracks.forEach(function(track) {
-            track.stop();
-        });
+    //     tracks.forEach(function(track) {
+    //         track.stop();
+    //     });
         
-        video.srcObject = null;
-    }
+    //     video.srcObject = null;
+    // }
 }
 
 
@@ -386,7 +388,7 @@ function cvcode(isIOS, isTrainMode) {
                         let br = cornerArray[2].corner.x > cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
 
                         // Put label at the top right corner
-                        alert(predictedLabel);
+                        // alert(predictedLabel);
                         
 
                         //Calculate the max width/height
@@ -455,7 +457,7 @@ function cvcode(isIOS, isTrainMode) {
             setTimeout(function(){
                     let coutfinal = document.getElementById("canvasOutput2");
                     let coutinit = document.getElementById("canvasOutput2");
-                    alert("initialOutput: (" + coutinit.style.width + " " + coutinit.style.height + ")");
+                    // alert("initialOutput: (" + coutinit.style.width + " " + coutinit.style.height + ")");
             }, 1);
 
             // Update running count of frames with a contour found
@@ -480,11 +482,11 @@ function cvcode(isIOS, isTrainMode) {
         if (scanRunning) {
             setTimeout(processVideo, delay);
         }
-        // else {
+        else {
             
-        //     stopVideo();
+            stopVideo();
               
-        // }
+        }
     }
 
     function showVideo() {
@@ -502,7 +504,7 @@ function cvcode(isIOS, isTrainMode) {
                 video.width = video.videoWidth;
                 canvasFrame.height = height;
                 canvasFrame.width = width;
-                alert(height + "   " + width);
+                // alert(height + "   " + width);
                 sized = true;
             }
 
@@ -628,7 +630,7 @@ function cvcode(isIOS, isTrainMode) {
                         // Draw predicted label on image
                         if (!isTrainMode && predictedLabel != "") {
                             console.log(predictedLabel);
-                            cv.putText(orig_padded, predictedLabel, {x: tl.corner.x, y: tl.corner.y}, cv.FONT_HERSHEY_SIMPLEX, 1.0, [0, 255, 0, 255]);
+                            cv.putText(orig_padded, predictedLabel, {x: tl.corner.x, y: tl.corner.y+10}, cv.FONT_HERSHEY_SIMPLEX, 1.5, [0, 0, 255, 255]);
                         }
 
                         //Calculate the max width/height
@@ -707,14 +709,23 @@ function cvcode(isIOS, isTrainMode) {
 
         }
         let delay = 1000/FPS - (Date.now() - begin);
-        setTimeout(showVideo, delay);
+
+        if (scanRunning) {
+            setTimeout(showVideo, delay);
+        }
+        else {
+            
+            stopVideo();
+              
+        }
+        
     }
     
     navigator.mediaDevices.getUserMedia({ video: vidOptions, audio: false }).then(function(stream) {
         // video.src = stream;
         video.srcObject = stream;
         video.play();
-        alert(video.src);
+        // alert(video.src);
         
         
         
@@ -753,7 +764,7 @@ function onOpenCvReady(isIOS, isTrainMode, firebasedb) {
     db = firebasedb;
     console.log(db);
     
-        
+    predictedLabel = "";
     scanRunning = true;
 
     // manualcode(link);
