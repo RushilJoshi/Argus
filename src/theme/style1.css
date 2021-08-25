@@ -48,6 +48,20 @@
     font-size: 24px;
 }
 
+.submit2 {
+    position: absolute;
+    width: 400px;
+    height: 80px;
+    border: 1px solid rgb(14, 49, 109);
+    border-radius: 20px;
+    color:  rgb(14, 49, 109);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+}
+
 #tabletitle {
     font-size: 24px;
 }

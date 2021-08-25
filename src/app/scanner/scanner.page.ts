@@ -2,9 +2,22 @@ import { Component, OnInit, HostListener, Inject, AfterViewInit} from '@angular/
 import { DOCUMENT } from '@angular/common';
 import {Platform} from '@ionic/angular';
 import {NavigationEnd, Router} from '@angular/router';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyD9DX-KNwXr48qvphZJ6rTWyQjTOrB9oEI",
+  authDomain: "eis-ocr-db.firebaseapp.com",
+  projectId: "eis-ocr-db",
+  storageBucket: "eis-ocr-db.appspot.com",
+  messagingSenderId: "629004783589",
+  appId: "1:629004783589:web:358c37262a0512afef290c",
+  measurementId: "G-ETC06HN8BC"
+};
 
-
+const app = initializeApp(firebaseConfig);
+const firebasedb = getFirestore(app);
+console.log(firebasedb);
 
 
 declare var cordova;
@@ -13,7 +26,7 @@ declare var url_global;
 declare var lockImage;
 declare var scanRunning;
 declare var sized;
-declare function onOpenCvReady(isIOS, link);
+declare function onOpenCvReady(isIOS, link, firebasedb);
 declare function stopVideo();
 declare function discardProjection();
 
@@ -26,6 +39,7 @@ export class ScannerPage implements OnInit {
 
   canvasWidth = 640;
   canvasHeight = 480;
+  tm = false;
 
 
   constructor(public platform: Platform, @Inject(DOCUMENT) document, private router: Router) { 
@@ -55,6 +69,7 @@ export class ScannerPage implements OnInit {
   startScanning() {
     var isIOS = this.platform.is("ios");
     var isTrainMode = this.router.getCurrentNavigation().extras.state.isTrainMode;
+    this.tm = isTrainMode;
 
 
     if (isIOS) {
@@ -63,16 +78,17 @@ export class ScannerPage implements OnInit {
     console.log("Method!");
     // let video = <HTMLVideoElement>document.getElementById("videoInput");
     
-    onOpenCvReady(isIOS, isTrainMode);
+    onOpenCvReady(isIOS, isTrainMode, firebasedb);
     
   }
 
   switchToSelect() {
+
     if (lockImage && payload_global != {}) {
         console.log("Moving contours and switching!");
         
         discardProjection();
-        this.router.navigate(["selector"], { state: { data: payload_global, url:url_global} });
+        this.router.navigate(["selector"], { state: { data: payload_global, url:url_global, isTrainMode: this.tm} });
     }
     else {
         console.log("You must capture a frame first");

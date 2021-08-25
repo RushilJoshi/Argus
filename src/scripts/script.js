@@ -15,9 +15,12 @@ var contourFound = false;
 var lockImage = false;
 var scanRunning = true;
 var sized = false;
+var isTrainModeGlobal = true;
+var db = null;
 
 var payload_global;
 var url_global;
+var predictedLabel = "";
 
 let FRAME_REQUIREMENT = 5;
 let verbose = false;
@@ -78,6 +81,16 @@ function drawBoxPreview(box, dims, dotted=false) {
 
     ctx.strokeRect(x, y, width, height);
     console.log("box drawn!!");
+}
+
+function knn(pl) {
+    if (pl["blocks"].length < 6) {
+        return "Osmolality";
+    }
+    else if (pl["blocks"].length > 10) {
+        return "pH Meter"
+    }
+    
 }
 
 const uploadFiles = async () => {
@@ -141,7 +154,7 @@ const uploadFiles = async () => {
                                     
 
                                     for(var k = 0; k < data["regions"][i]["lines"][j]["words"].length; k++) {
-                                        newData["text"] += data["regions"][i]["lines"][j]["words"][k].text;
+                                        newData["text"] += data["regions"][i]["lines"][j]["words"][k].text + " ";
                                     }
                                     payload["blocks"].push(newData);
                                 }
@@ -155,6 +168,10 @@ const uploadFiles = async () => {
                             );
                             payload_global = payload;
                             url_global = uploadURL;
+
+                            if (!isTrainModeGlobal) {
+                                predictedLabel = knn(payload);
+                            }
                             
                         })
 
@@ -190,7 +207,7 @@ function stopVideo() {
 
 
 
-function cvcode(isIOS) {
+function cvcode(isIOS, isTrainMode) {
 
     // Get video from media
     let video = document.getElementById("videoInput"); // video is the id of video tag
@@ -327,6 +344,7 @@ function cvcode(isIOS) {
                         let cornerArray = [];
                         let colorChoice = (count >= FRAME_REQUIREMENT) ? [0, 255, 0, 255] : [255, 0, 0, 255];
 
+
                         for (var i = 1; i < approx.rows; i += 1) {
                             let prev_point = new cv.Point(approx.data32S[(i - 1)*2], approx.data32S[(i - 1)*2 + 1]);
                             let cur_point = new cv.Point(approx.data32S[(i)*2], approx.data32S[(i)*2 + 1]);
@@ -336,6 +354,7 @@ function cvcode(isIOS) {
                             prev_point.y *= orig_padded.rows / src.rows;
                             cur_point.x *= orig_padded.cols / src.cols;
                             cur_point.y *= orig_padded.rows / src.rows;
+
 
                             // Draw line, add to array
                             cv.line(orig_padded, prev_point, cur_point, colorChoice, 4);
@@ -365,6 +384,10 @@ function cvcode(isIOS) {
                         let tr = cornerArray[0].corner.x > cornerArray[1].corner.x ? cornerArray[0] : cornerArray[1];
                         let bl = cornerArray[2].corner.x < cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
                         let br = cornerArray[2].corner.x > cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
+
+                        // Put label at the top right corner
+                        alert(predictedLabel);
+                        
 
                         //Calculate the max width/height
                         let widthBottom = Math.hypot(br.corner.x - bl.corner.x, br.corner.y - bl.corner.y);
@@ -602,6 +625,12 @@ function cvcode(isIOS) {
                         let bl = cornerArray[2].corner.x < cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
                         let br = cornerArray[2].corner.x > cornerArray[3].corner.x ? cornerArray[2] : cornerArray[3];
 
+                        // Draw predicted label on image
+                        if (!isTrainMode && predictedLabel != "") {
+                            console.log(predictedLabel);
+                            cv.putText(orig_padded, predictedLabel, {x: tl.corner.x, y: tl.corner.y}, cv.FONT_HERSHEY_SIMPLEX, 1.0, [0, 255, 0, 255]);
+                        }
+
                         //Calculate the max width/height
                         let widthBottom = Math.hypot(br.corner.x - bl.corner.x, br.corner.y - bl.corner.y);
                         let widthTop = Math.hypot(tr.corner.x - tl.corner.x, tr.corner.y - tl.corner.y);
@@ -717,16 +746,18 @@ function manualcode(link) {
    
 }
 
-function onOpenCvReady(isIOS, isTrainMode) {
+function onOpenCvReady(isIOS, isTrainMode, firebasedb) {
 
     console.log("Running opencv loop!", cv);
-    alert("isTrainMode " + isTrainMode);
+    isTrainModeGlobal = isTrainMode;
+    db = firebasedb;
+    console.log(db);
     
         
     scanRunning = true;
 
     // manualcode(link);
-    cvcode(isIOS);
+    cvcode(isIOS, isTrainMode);
     
     
      

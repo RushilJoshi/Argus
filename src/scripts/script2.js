@@ -404,10 +404,19 @@ function getCursorPosition(canvas, event, payload, dims) {
 }
 
 
-function onSelectorReady(data) {
+function onSelectorReady(data, isTrainMode) {
     background = document.getElementById("backgroundImage");
     preview = document.getElementById("preview");
     ctx = preview.getContext("2d");
+
+    if (!isTrainMode) {
+        document.getElementById("submitButton").className = "submit2";
+        document.getElementById("submitButton").innerHTML = "Generate JSON";
+    }
+    else {
+        document.getElementById("submitButton").className = "submit";
+        document.getElementById("submitButton").innerHTML = "Add to Dataset";
+    }
 
     console.log("YEEET", data);
     sample_payload = data["data"];
@@ -457,4 +466,6 @@ function onSelectorReady(data) {
 function submitToDataset() {
     alert("Yeet!");
     alert(sample_payload);
+    console.log("hmmm");
+    console.log(db);
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { ScannerPage } from '../scanner/scanner.page';
 
-declare function onSelectorReady(data);
+declare function onSelectorReady(data, isTrainMode);
 
 @Component({
   selector: 'app-selector',
@@ -16,7 +16,8 @@ export class SelectorPage implements OnInit {
   ngOnInit() {
     console.log("DONE!");
     var obtainedData = this.router.getCurrentNavigation().extras.state; // should log out 'bar'
-    onSelectorReady(obtainedData);
+    var isTrainMode = this.router.getCurrentNavigation().extras.state.isTrainMode;
+    onSelectorReady(obtainedData, isTrainMode);
 
   }
 
