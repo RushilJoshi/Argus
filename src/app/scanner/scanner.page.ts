@@ -48,29 +48,40 @@ export class ScannerPage implements OnInit {
   constructor(public platform: Platform, @Inject(DOCUMENT) document, private router: Router) { 
 
 
-    this.router.events.subscribe(event =>{
-      if (event instanceof NavigationEnd) {
-        if (event.url == "/scanner") {
+    // this.router.events.subscribe(event =>{
+    //   if (event instanceof NavigationEnd) {
+    //     if (event.url == "/scanner") {
 
           
           
-          alert("Scanner reached");
-          window.dispatchEvent(new Event('resize'));
-          scanRunning = true;
-          lockImage = false;
-          this.startScanning();
+    //       alert("Scanner reached");
+    //       window.dispatchEvent(new Event('resize'));
+    //       scanRunning = true;
+    //       lockImage = false;
+    //       this.startScanning();
           
-        }
-      }
-    })
-
+    //     }
+    //   }
+    // })
+    
 
   }
 
   ngOnInit() {
     console.log("Scanner page initialized!");
+    // ------------------
+    // alert("Scanner reached");
+    window.dispatchEvent(new Event('resize'));
+    scanRunning = true;
+    sized = false;
+    // alert("Sized in ts: " + sized);
+    lockImage = false;
+    this.startScanning();
+    // ---------------------------------
     
   }
+
+
 
 
   startScanning() {
@@ -96,6 +107,7 @@ export class ScannerPage implements OnInit {
         
         
         // alert(predictedLabel);
+        
         this.router.navigate(["selector"], { state: { data: payload_global, url:url_global, isTrainMode: this.tm, doctype: predictedLabel} });
         discardProjection();
     }

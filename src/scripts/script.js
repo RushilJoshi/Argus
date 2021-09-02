@@ -505,6 +505,7 @@ function cvcode(isIOS, isTrainMode) {
                 canvasFrame.height = height;
                 canvasFrame.width = width;
                 // alert(height + "   " + width);
+                // alert("Sized in script: " + sized);
                 sized = true;
             }
 
