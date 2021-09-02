@@ -185,6 +185,8 @@ var sample_payload = {
     ]
 };
 
+var isTrainModeGlobal = false;
+
 // INCOMPLETE
 var patterns = {
     "dateMonths": ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
@@ -373,6 +375,7 @@ function addTableData(i, tableID) {
         row.childNodes[3].setAttribute("onclick", "handleDeletion(this)");
         
         sample_payload["blocks"][i]["tableID"] = idcount;
+        sample_payload["blocks"][i]["cached"] = [groups[0], groups[1], groups[2]];
         idcount += 1;
 
         var objDiv = document.getElementById("tableScroll");
@@ -427,6 +430,8 @@ function onSelectorReady(data, isTrainMode, doctype) {
     background = document.getElementById("backgroundImage");
     preview = document.getElementById("preview");
     ctx = preview.getContext("2d");
+
+    isTrainModeGlobal = isTrainMode;
 
     if (!isTrainMode) {
         document.getElementById("submitButton").className = "submit2";
@@ -484,14 +489,64 @@ function onSelectorReady(data, isTrainMode, doctype) {
             autoSelect(doctype);
             drawAll(sample_payload, dims);
             
-        }, 200);
+        }, 500);
     });
     
 }
 
+function closenote() {
+    var notification = document.getElementById("notification");
+    notification.style.display = "none";
+}
+
 function submitToDataset() {
-    alert("Added to dataset.");
-    alert(sample_payload);
+
+    if (document.getElementById("doctypeEntry").value == "") {
+        alert("You must enter a document type");
+        return;
+    }
+
+
+
+    var finalData = {"data":[]};
+    for (var i = 0; i < sample_payload["blocks"].length; i++) {
+        if (!sample_payload["blocks"][i]["dotted"]) {
+            if (sample_payload["blocks"][i]["cached"]) {
+                var group = sample_payload["blocks"][i]["cached"];
+                if (group[2] == "x") {
+                    group[2] = "n/a";
+                }
+                var toAdd = {"field": group[0], "value": group[1], "units": group[2]};
+                finalData["data"].push(toAdd);
+            }
+            
+        }
+    }
+
+
+
+
+    var message = document.getElementById("message");
+
+    if (isTrainModeGlobal) {
+        // alert(finalData);
+        // alert("Added to dataset.");
+        message.innerHTML = "Added to dataset.";
+    }
+    else {
+        // alert(finalData);
+        // alert("JSON Generated!");
+        message.innerHTML = "JSON Generated!";
+    }
+
+    var notification = document.getElementById("notification");
+    var jsonoutput = document.getElementById("jsonoutput");
+    
+    notification.style.display = "block";
+    jsonoutput.textContent = JSON.stringify(finalData, null, 4);
+    
+    
+    
     console.log("hmmm");
     console.log(db);
 }

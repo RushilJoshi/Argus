@@ -631,7 +631,7 @@ function cvcode(isIOS, isTrainMode) {
                         // Draw predicted label on image
                         if (!isTrainMode && predictedLabel != "") {
                             console.log(predictedLabel);
-                            cv.putText(orig_padded, predictedLabel, {x: tl.corner.x, y: tl.corner.y+10}, cv.FONT_HERSHEY_SIMPLEX, 1.5, [0, 0, 255, 255]);
+                            cv.putText(orig_padded, predictedLabel, {x: tl.corner.x, y: tl.corner.y-35}, cv.FONT_HERSHEY_DUPLEX, 1.5, [0, 0, 255, 255], 2.0);
                         }
 
                         //Calculate the max width/height
